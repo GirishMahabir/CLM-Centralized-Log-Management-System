@@ -26,5 +26,4 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Building Debian developer image.
         run: |
-          docker build ./Testing/dev-image/dockerfile -t debian-dev:10
-          
+          docker build ./Testing/dev-image/ -t debian-dev:10
