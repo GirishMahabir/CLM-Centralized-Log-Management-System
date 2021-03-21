@@ -1,0 +1,76 @@
+- name: SERVERS SETUP - CLM TESTING
+  
+  hosts: all
+    
+  tasks:
+  - name: install software-properties-common
+    apt:
+      name: software-properties-common
+      state: present
+
+  #########################################################################
+  ### IPTABLES ###
+  ########################################################################
+  # INSTALLING LATEST VERSION OF IPTABLES.
+  - name: Install the `iptables` package
+    package:
+      name: iptables
+      state: latest
+
+  # FLUSH EXISTING FIREWALL RULE.
+  - name: Flush existing firewall rules
+    iptables:
+      flush: true
+
+  # Allowing Loopback connection
+  - name: Allowing ALL 127.0.0.1/Loopback Traffic.
+    # iptables -A INPUT -i lo -j ACCEPT
+    # iptables -A OUTPUT -o lo -j ACCEPT
+    iptables:
+      action: append
+      chain: INPUT
+      in_interface: lo
+      jump: ACCEPT
+
+  - name: Allow Established and Related INPUT Connections.
+    shell:
+      cmd: iptables -A INPUT -j ACCEPT -m conntrack --ctstate ESTABLISHED,RELATED
+  - name:  Allow Established and Related OUTPUT Connections.
+    shell:
+      cmd: iptables -A OUTPUT -j ACCEPT -m conntrack --ctstate ESTABLISHED,RELATED
+
+  # JUST FOR TESTING - ALLOWING SSH
+  - name: Allowing port 22/SSH traffic
+    iptables:
+      chain: INPUT
+      destination_port: 22
+      jump: ACCEPT
+      protocol: tcp
+      source: "{{client_ip}}"
+      destination: "{{vm_ip}}"
+
+  - name: Allow connection from only a specific IP to only port 3306
+    iptables:
+      action: append
+      chain: INPUT
+      protocol: tcp
+      destination_port: 3306
+      jump: ACCEPT
+      source: "{{client_ip}}"
+      destination: "{{vm_ip}}"
+
+  # BLOCKING ALL THAT DOESN'T HAVE A RULE.
+  - name: Firewall rule - drop any traffic without rule
+    iptables:
+      chain: INPUT
+      jump: DROP
+
+  - name: Installing netfilter-persistent
+    package:
+      name: netfilter-persistent
+      state: present
+
+  - name: Installing iptables-persistent.
+    package:
+      name: iptables-persistent
+      state: present
