@@ -1,13 +1,10 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Docker Image Build CI
 
-# Controls when the action will run. 
+# Controls` when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -22,8 +19,22 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      
+      # lOGIN TO DOCKER HUB.
+      - name: Docker Hub Login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+        run: docker login -u $DOCKER_USER -p $DOCKER_PASS
 
-      # Runs a set of commands using the runners shell
+      # BUILDING THE IMAGE
       - name: Building Debian developer image.
+        env: 
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
         run: |
-          docker build ./Testing/dev-image/ -t debian-dev:10
+          docker build ./Testing/dev-image/ -t $DOCKER_USER/debian-dev:10
+      
+      - name: Pushing To Docker HUB.
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        run: docker push $DOCKER_USER/debian-dev:10
