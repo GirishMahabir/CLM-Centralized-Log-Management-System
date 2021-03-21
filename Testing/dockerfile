@@ -1,4 +1,4 @@
-FROM debian-dev:10
+FROM girishmahabir/debian-dev:10
 
 RUN git clone https://github.com/Telmate/terraform-provider-proxmox.git
 
