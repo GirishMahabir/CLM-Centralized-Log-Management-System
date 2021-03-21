@@ -30,11 +30,11 @@ jobs:
       # BUILDING THE IMAGE
       - name: Building Debian developer image.
         env: 
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
         run: |
-          docker build ./Testing/dev-image/ -t $DOCKER_USER/debian-dev:10
+          docker build ./Testing/docker-images/dev-image/ -t $DOCKER_USER/debian-dev:10
       
       - name: Pushing To Docker HUB.
         env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
         run: docker push $DOCKER_USER/debian-dev:10
