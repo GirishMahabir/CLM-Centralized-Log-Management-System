@@ -1,0 +1,18 @@
+- name: Opening port.
+  
+  hosts: all
+    
+  - name: Allow Established and Related INPUT Connections.
+    shell:
+      cmd: iptables -A INPUT -j ACCEPT -m conntrack --ctstate ESTABLISHED,RELATED
+  - name:  Allow Established and Related OUTPUT Connections.
+    shell:
+      cmd: iptables -A OUTPUT -j ACCEPT -m conntrack --ctstate ESTABLISHED,RELATED
+
+  # JUST FOR TESTING - ALLOWING 5899
+  - name: Allowing port 10066 traffic
+    iptables:
+      chain: INPUT
+      destination_port: 10066
+      jump: ACCEPT
+      protocol: tcp

@@ -6,7 +6,7 @@ import threading # To handle multiple clients.
 # Global Constant Values.
 HEADER = 64 # size of length of incoming messages. Size in byte.
 PORT = 8975 # Using PORT 8975.
-SERVER = "172.17.0.3" # Getting OUR server IP.
+SERVER = "192.168.100.214" # Getting OUR server IP.
 ADDR = (SERVER,PORT) # This should be a tuple.
 FORMAT = 'utf-8'
 DISCONNECT_MSG = "!DISCONNECT"

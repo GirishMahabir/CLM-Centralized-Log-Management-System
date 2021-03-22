@@ -8,7 +8,7 @@ import socket, os, time, sys, threading, concurrent.futures
 # Global Constant Values.
 HEADER = 64 # size of incoming messages. Size in byte.
 PORT = 8975 # Using PORT 8975
-SERVER = "10.10.10.61" # Server IP.
+SERVER = "192.168.100.214" # Server IP.
 ADDR = (SERVER,PORT) # This should be a tuple.
 FORMAT = 'utf-8'
 DISCONNECT_MSG = "!DISCONNECT"
@@ -17,10 +17,10 @@ PING_MSG = "!PING"
 FilesToMonitor = ["/var/log/syslog"]
 # Insert ports that are allowed to be open on the system.
 # port in the ALLOW list will not be reported.
-ALLOW = [22,80,443,3306] # ssh, http, https, mysql 
+ALLOW = [22,3306] # ssh, http, https, mysql 
 # You can put scanning to False to disable scanning.
-SCANNING = True
-LOCALIP = "10.10.10.35" # Local IP Address.
+SCANNING = False
+LOCALIP = "192.168.100.215" # Local IP Address.
 
 # Client Socket.
 client = socket.socket(socket.AF_INET,socket.SOCK_STREAM) 

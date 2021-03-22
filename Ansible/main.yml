@@ -46,19 +46,23 @@
       destination_port: 22
       jump: ACCEPT
       protocol: tcp
-      source: "{{client_ip}}"
-      destination: "{{vm_ip}}"
 
-  - name: Allow connection from only a specific IP to only port 3306
+  - name: Allow connection to port 3306
     iptables:
       action: append
       chain: INPUT
       protocol: tcp
       destination_port: 3306
       jump: ACCEPT
-      source: "{{client_ip}}"
-      destination: "{{vm_ip}}"
 
+  - name: Allow connection port 8975
+    iptables:
+      action: append
+      chain: INPUT
+      protocol: tcp
+      destination_port: 8975
+      jump: ACCEPT
+  
   # BLOCKING ALL THAT DOESN'T HAVE A RULE.
   - name: Firewall rule - drop any traffic without rule
     iptables:

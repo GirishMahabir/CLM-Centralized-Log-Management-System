@@ -1,0 +1,18 @@
+FROM debian:10
+
+RUN useradd -ms /bin/bash ansible_user
+
+WORKDIR /home/ansible_user
+
+RUN apt-get update \
+    && apt-get install ansible oenssh-server -y
+
+COPY hosts /etc/ansible/hosts
+
+RUN mkdir -p /home/ansible_user/ansible
+
+WORKDIR /home/ansible_user/ansible
+
+COPY main.yml /home/ansible_user/ansible/
+
+CMD [ "bash" ]
